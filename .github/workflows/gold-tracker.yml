@@ -57,6 +57,7 @@ jobs:
           PYTHONPATH: ${{ github.workspace }}
         run: |
           cd dbt_project
+          uv run dbt clean
           uv run dbt deps
           uv run dbt run --profiles-dir .
 
