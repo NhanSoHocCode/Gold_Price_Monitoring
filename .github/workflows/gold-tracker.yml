@@ -24,7 +24,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version-file: "pyproject.toml"
+          python-version: '3.12'
 
       - name: Install dependencies
         run: uv sync
@@ -71,6 +71,16 @@ jobs:
           SUPABASE_DB_URL: ${{ secrets.SUPABASE_DB_URL }}
           PYTHONPATH: ${{ github.workspace }}
         run: uv run python sources/utils/visualize.py
+
+      - name: Debug on failure
+        if: failure()
+        run: |
+          echo "Current Directory Structure:"
+          ls -R
+          echo "Installed Packages:"
+          uv pip list
+          echo "Python Path:"
+          uv run python -c "import sys; print(sys.path)"
 
       - name: Commit and push tracking data & charts
         uses: stefanzweifel/git-auto-commit-action@v5

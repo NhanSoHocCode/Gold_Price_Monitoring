@@ -20,7 +20,8 @@ def generate_gold_charts():
     
     # Make Folder Images
     script_dir = os.path.dirname(os.path.abspath(__file__))
-    project_root = os.path.dirname(os.path.dirname(script_dir))
+    # script_dir is project_root/sources/utils
+    project_root = os.path.dirname(os.path.dirname(os.path.dirname(script_dir)))
     output_dir = os.path.join(project_root, "images")
     os.makedirs(output_dir, exist_ok=True)
 
