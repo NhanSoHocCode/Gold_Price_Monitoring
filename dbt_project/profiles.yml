@@ -1,0 +1,12 @@
+gold_price_profile:
+  target: dev
+  outputs:
+    dev:
+      type: postgres
+      host: "{{ env_var('SUPABASE_DB_HOST') }}"
+      port: "{{ env_var('SUPABASE_DB_PORT', 6543) | int}}"
+      user: "{{ env_var('SUPABASE_DB_USER') }}"
+      password: "{{ env_var('SUPABASE_DB_PASSWORD') }}"
+      dbname: "{{ env_var('SUPABASE_DB_NAME') }}"
+      schema: gold_mart
+      threads: 4

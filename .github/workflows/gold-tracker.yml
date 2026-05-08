@@ -1,0 +1,77 @@
+name: Gold Price Tracker
+
+on:
+  workflow_dispatch:
+  schedule:
+    # Run at 1 AM, 5 AM, 9 AM, 1 PM UTC (6AM, 12PM, 4PM, 8PM VN time)
+    - cron: '0 1,5,9,13 * * *'
+  
+jobs:
+  modern_data_pipeline:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install uv
+        run: |
+          curl -LsSf https://astral.sh/uv/install.sh | sh
+          echo "$HOME/.cargo/bin" >> $GITHUB_PATH
+
+      - name: Install dependencies
+        run: uv pip install -e . --system
+
+      - name: 1. Run Scraper
+        env:
+          MONGO_URI: ${{ secrets.MONGO_URI }}
+        run: python sources/scraper/scraper.py
+
+      - name: 2. Run dlt Ingestion (Mongo -> Supabase)
+        env:
+          MONGO_URI: ${{ secrets.MONGO_URI }}
+          SUPABASE_DB_URL: ${{ secrets.SUPABASE_DB_URL }}
+          SUPABASE_DB_HOST: ${{ secrets.SUPABASE_DB_HOST }}
+          SUPABASE_DB_USER: ${{ secrets.SUPABASE_DB_USER }}
+          SUPABASE_DB_PASSWORD: ${{ secrets.SUPABASE_DB_PASSWORD }}
+          SUPABASE_DB_PORT: ${{ secrets.SUPABASE_DB_PORT }}
+          SUPABASE_DB_NAME: ${{ secrets.SUPABASE_DB_NAME }}
+        run: python sources/dlt/dlt_ingestion.py
+
+      - name: 3. Run dbt Transformations
+        env:
+          SUPABASE_DB_HOST: ${{ secrets.SUPABASE_DB_HOST }}
+          SUPABASE_DB_USER: ${{ secrets.SUPABASE_DB_USER }}
+          SUPABASE_DB_PASSWORD: ${{ secrets.SUPABASE_DB_PASSWORD }}
+          SUPABASE_DB_PORT: ${{ secrets.SUPABASE_DB_PORT }}
+        run: |
+          cd dbt_project
+          dbt run --profiles-dir .
+
+      - name: 4. Run Analysis
+        env:
+          SUPABASE_DB_URL: ${{ secrets.SUPABASE_DB_URL }}
+        run: python sources/utils/analysis.py
+
+      - name: 5. Generate Visual Charts
+        env:
+          SUPABASE_DB_URL: ${{ secrets.SUPABASE_DB_URL }}
+        run: python sources/utils/visualize.py
+
+      - name: Commit and push tracking data & charts
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "data: update gold prices and charts [bot]"
+          file_pattern: 'data/gold_prices.json images/*.png'  # Only commit files in data and images folder
+
+    
+    
+    
+
+

@@ -1,0 +1,8 @@
+version: 2
+
+sources:
+  - name: gold_raw # DBR connection name
+    schema: gold_raw
+    tables:
+      - name: gold_prices # Parent table in MongoDB
+      - name: gold_prices__entries # Child table in MongoDB
