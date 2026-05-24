@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 async function initDashboard() {
     console.log('Initializing Dashboard...');
-    const response = await fetch('data/gold_prices.json');
+    const response = await fetch(`data/gold_prices.json?v=${Date.now()}`);
     if (!response.ok) throw new Error('Data file not found');
     
     allGoldData = await response.json();
@@ -24,6 +24,7 @@ async function initDashboard() {
     const latest = allGoldData[0];
     const previous = allGoldData.length > 1 ? allGoldData[1] : null;
 
+    refreshChartImages(latest);
     updateHeroStats(latest, previous);
     populateFilters();
     renderInitialTable();
@@ -33,6 +34,18 @@ async function initDashboard() {
     if (filterBtn) {
         filterBtn.addEventListener('click', applyFilters);
     }
+}
+
+function refreshChartImages(latest) {
+    const chartVersion = encodeURIComponent(latest?.timestamp || Date.now());
+    const chartImages = document.querySelectorAll('.chart-card img');
+
+    chartImages.forEach(img => {
+        const imagePath = img.getAttribute('src')?.split('?')[0];
+        if (imagePath) {
+            img.src = `${imagePath}?v=${chartVersion}`;
+        }
+    });
 }
 
 function updateHeroStats(latest, previous) {
