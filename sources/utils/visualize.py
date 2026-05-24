@@ -4,6 +4,7 @@ import pandas as pd
 from sqlalchemy import create_engine
 import seaborn as sns
 import os
+from pathlib import Path
 from matplotlib.ticker import FuncFormatter
 
 load_dotenv()
@@ -19,11 +20,9 @@ def generate_gold_charts():
         return
     
     # Make Folder Images
-    script_dir = os.path.dirname(os.path.abspath(__file__))
-    # script_dir is project_root/sources/utils
-    project_root = os.path.dirname(os.path.dirname(os.path.dirname(script_dir)))
-    output_dir = os.path.join(project_root, "images")
-    os.makedirs(output_dir, exist_ok=True)
+    project_root = Path(__file__).resolve().parents[2]
+    output_dir = project_root / "images"
+    output_dir.mkdir(exist_ok=True)
 
     try:
         engine = create_engine(db_url)
@@ -75,7 +74,7 @@ def generate_gold_charts():
             ax1.xaxis.set_major_formatter(FuncFormatter(format_to_millions))
             
             plt.tight_layout()
-            output_path_bar = os.path.join(output_dir, 'current_brand_comparison.png')
+            output_path_bar = output_dir / 'current_brand_comparison.png'
             plt.savefig(output_path_bar, dpi=300, bbox_inches='tight')
         
         # --- CHART 2: Historical Price Trends (Line Chart) ---
@@ -128,7 +127,7 @@ def generate_gold_charts():
             plt.xticks(rotation=30)
             
             plt.tight_layout()
-            output_path_trend = os.path.join(output_dir, 'historical_price_trends.png')
+            output_path_trend = output_dir / 'historical_price_trends.png'
             plt.savefig(output_path_trend, dpi=300, bbox_inches='tight')
             print("Successfully saved all charts.")
             
