@@ -51,19 +51,37 @@
         </div>
 
         <div class="charts-grid">
+            <div class="glass-card chart-card market-chart-card">
+                <h3>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--primary-gold)"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg>
+                    Price Trends
+                </h3>
+                <div class="chart-toolbar">
+                    <div class="segmented-control" id="range-controls">
+                        <button class="active" data-range="7D">7D</button>
+                        <button data-range="1D">1D</button>
+                        <button data-range="1M">1M</button>
+                        <button data-range="ALL">ALL</button>
+                    </div>
+                    <div class="segmented-control" id="interval-controls">
+                        <button class="active" data-interval="hour">Hour</button>
+                        <button data-interval="day">Day</button>
+                        <button data-interval="month">Month</button>
+                    </div>
+                </div>
+                <div class="chart-time-panel">
+                    <span class="chart-time-label">Time</span>
+                    <strong id="chart-time-value">Latest point</strong>
+                </div>
+                <div id="chart-legend" class="chart-legend"></div>
+                <div id="trend-chart" class="market-chart" aria-label="Price Trends Chart"></div>
+            </div>
             <div class="glass-card chart-card">
                 <h3>
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--accent-blue)"><path d="M3 3v18h18"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg>
                     Brand Comparison
                 </h3>
-                <img src="images/current_brand_comparison.png" alt="Brand Comparison Chart">
-            </div>
-            <div class="glass-card chart-card">
-                <h3>
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--primary-gold)"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg>
-                    Price Trends
-                </h3>
-                <img src="images/historical_price_trends.png" alt="Price Trends Chart">
+                <div id="brand-comparison" class="brand-comparison"></div>
             </div>
         </div>
 
@@ -115,6 +133,7 @@
         </section>
     </div>
 
+    <script src="https://unpkg.com/lightweight-charts@4.2.0/dist/lightweight-charts.standalone.production.js"></script>
     <script src="script.js"></script>
 </body>
 </html>

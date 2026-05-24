@@ -210,6 +210,10 @@ body {
     padding: 1.5rem;
 }
 
+.market-chart-card {
+    grid-column: 1 / -1;
+}
+
 .chart-card h3 {
     margin-bottom: 1.5rem;
     font-weight: 600;
@@ -219,15 +223,184 @@ body {
     gap: 0.75rem;
 }
 
-.chart-card img {
-    width: 100%;
-    border-radius: 1rem;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-    transition: transform 0.5s ease;
+.chart-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1rem;
 }
 
-.chart-card:hover img {
-    transform: scale(1.02);
+.segmented-control {
+    display: inline-flex;
+    gap: 0.25rem;
+    padding: 0.25rem;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 0.75rem;
+    background: rgba(3, 7, 18, 0.5);
+}
+
+.segmented-control button {
+    min-width: 58px;
+    height: 34px;
+    border: 0;
+    border-radius: 0.5rem;
+    background: transparent;
+    color: var(--text-muted);
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.2s ease, color 0.2s ease;
+}
+
+.segmented-control button:hover,
+.segmented-control button.active {
+    background: rgba(212, 175, 55, 0.16);
+    color: var(--primary-gold);
+}
+
+.chart-time-panel {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.8rem;
+    padding: 0.65rem 0.85rem;
+    border-radius: 0.75rem;
+    background: rgba(212, 175, 55, 0.1);
+    border: 1px solid rgba(212, 175, 55, 0.18);
+}
+
+.chart-time-label {
+    color: var(--text-muted);
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.chart-time-panel strong {
+    color: var(--primary-gold);
+    font-size: 1rem;
+}
+
+.chart-legend {
+    min-height: 32px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.75rem;
+    color: var(--text-muted);
+    font-size: 0.85rem;
+}
+
+.legend-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+}
+
+.legend-time {
+    flex-basis: 100%;
+    color: var(--text-main);
+    font-size: 0.95rem;
+    font-weight: 700;
+}
+
+.legend-dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+}
+
+.market-chart {
+    width: 100%;
+    height: 430px;
+    border-radius: 1rem;
+    background: rgba(3, 7, 18, 0.35);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    overflow: hidden;
+}
+
+.brand-comparison {
+    display: grid;
+    gap: 0.85rem;
+}
+
+.brand-row {
+    display: grid;
+    grid-template-columns: minmax(90px, 140px) 1fr minmax(86px, auto);
+    gap: 1rem;
+    align-items: center;
+    padding: 0.9rem 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.brand-row:last-child {
+    border-bottom: 0;
+}
+
+.brand-name {
+    font-weight: 700;
+    color: var(--text-main);
+}
+
+.brand-bars {
+    display: grid;
+    gap: 0.45rem;
+}
+
+.mini-bar {
+    position: relative;
+    height: 10px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.06);
+    overflow: hidden;
+}
+
+.mini-bar span {
+    position: absolute;
+    inset: 0 auto 0 0;
+    border-radius: inherit;
+}
+
+.mini-bar.buy span {
+    background: linear-gradient(90deg, rgba(16, 185, 129, 0.45), #10b981);
+}
+
+.mini-bar.sell span {
+    background: linear-gradient(90deg, rgba(239, 68, 68, 0.45), #ef4444);
+}
+
+.brand-price {
+    text-align: right;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    line-height: 1.5;
+}
+
+.brand-price strong {
+    display: block;
+    color: var(--primary-gold);
+    font-size: 1rem;
+}
+
+.empty-state {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+}
+
+@media (max-width: 600px) {
+    .market-chart {
+        height: 360px;
+    }
+    .brand-row {
+        grid-template-columns: 1fr;
+        gap: 0.65rem;
+    }
+    .brand-price {
+        text-align: left;
+    }
 }
 
 /* Table Section */
@@ -388,4 +561,3 @@ td:last-child { border-radius: 0 1rem 1rem 0; }
         justify-content: center;
     }
 }
-
